@@ -3,151 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOPA | Khristian, Oliver, Panav, Ayaan</title>
+    <title>KOPA | Squad Hub</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
-        :root {
-            --primary: #00d2ff; /* Cyber Blue */
-            --secondary: #92fe9d; /* Bright Green */
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f8fafc;
+        :root { 
+            --primary: #00d2ff; 
+            --secondary: #92fe9d; 
+            --bg: #0f172a; 
+            --card-bg: #1e293b; 
+            --text: #f8fafc; 
         }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            scroll-behavior: smooth; 
         }
-
-        /* Navigation Bar */
-        nav {
-            background-color: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #334155;
+        nav { 
+            background: rgba(15, 23, 42, 0.9); 
+            padding: 1rem; 
+            display: flex; 
+            justify-content: center; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid #334155; 
         }
-
-        nav a {
-            color: #94a3b8;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-            letter-spacing: 1px;
+        nav a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            margin: 0 15px; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
         }
-
-        nav a:hover {
-            color: var(--primary);
+        .hero { 
+            height: 80vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
         }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            text-align: center;
-            padding: 0 20px;
+        .hero h1 { 
+            font-size: 4rem; 
+            background: linear-gradient(to right, var(--primary), var(--secondary)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin: 0;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
+        section { 
+            padding: 80px 20px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
         }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin-top: 10px;
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
         }
-
-        .hero .names {
-            margin-top: 20px;
-            font-weight: bold;
-            color: var(--text);
-            background: rgba(255,255,255,0.05);
-            padding: 10px 20px;
-            border-radius: 50px;
+        .card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid #334155; 
         }
-
-        /* Section Styling */
-        section {
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
+        .btn { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            background: var(--primary); 
+            color: #000; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border: none; 
         }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 40px;
-            text-align: center;
+        #messages { 
+            height: 300px; 
+            overflow-y: auto; 
+            background: #0f172a; 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+        .msg { 
+            background: #1e293b; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            border-left: 4px solid var(--primary); 
         }
-
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            border: 1px solid #334155;
-            text-align: left;
+        .msg small { 
+            color: var(--primary); 
+            display: block; 
+            margin-bottom: 5px; 
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px -10px rgba(0, 210, 255, 0.3);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary);
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: linear-gradient(to right, var(--primary), #0082ff);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            border-top: 1px solid #334155;
-            color: #64748b;
+        textarea { 
+            width: 100%; 
+            background: #0f172a; 
+            color: white; 
+            border: 1px solid #334155; 
+            border-radius: 8px; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            font-family: inherit; 
         }
     </style>
 </head>
@@ -155,68 +119,125 @@
 
     <nav>
         <a href="#home">Home</a>
+        <a href="#feed">Squad Feed</a>
         <a href="#football">Football</a>
-        <a href="#basketball">Basketball</a>
         <a href="#media">Media</a>
     </nav>
 
     <section id="home" class="hero">
-        <h1>WELCOME KOPA!</h1>
-        <div class="names">Khristian • Oliver • Panav • Ayaan</div>
-        <p>The ultimate squad hub for sports, stats, and streams.</p>
+        <h1>KOPA SQUAD</h1>
+        <p>2026 Edition • Khristian • Oliver • Panav • Ayaan</p>
     </section>
 
-    <section id="football">
-        <h2>FOOTBALL HUB</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>FotMob</h3>
-                <p>The fastest live scores, stats, and news for every major league.</p>
-                <a href="https://www.fotmob.com" target="_blank" class="btn">Launch FotMob</a>
+    <section id="feed">
+        <h2>SQUAD FEED</h2>
+        <div class="card">
+            <div id="auth-ui">
+                <button onclick="login()" class="btn">Login with Google to Post</button>
             </div>
-            <div class="card">
-                <h3>Goal.com</h3>
-                <p>Stay updated with the latest transfer rumors and global football news.</p>
-                <a href="https://www.goal.com" target="_blank" class="btn">View Goal</a>
+            <div id="post-ui" style="display:none;">
+                <textarea id="postInput" placeholder="Share a goal link or update..."></textarea>
+                <button onclick="sendPost()" class="btn">Post to Feed</button>
+                <button onclick="logout()" style="background:transparent; color: #64748b; border:none; cursor:pointer; margin-left: 10px;">Logout</button>
             </div>
+            <div id="messages"></div>
         </div>
     </section>
 
-    <section id="basketball">
-        <h2>BASKETBALL STUFF</h2>
+    <section id="football">
+        <h2>SPORTS HUB</h2>
         <div class="grid">
             <div class="card">
-                <h3>ESPN NBA</h3>
-                <p>Scores, standings, and in-depth analysis of the NBA and beyond.</p>
-                <a href="https://www.espn.com/nba/" target="_blank" class="btn">Open ESPN</a>
+                <h3>FotMob</h3>
+                <p>The fastest live scores and stats.</p>
+                <a href="https://www.fotmob.com" target="_blank" class="btn">Live Scores</a>
             </div>
             <div class="card">
-                <h3>Hoops Central</h3>
-                <p>Check out the latest highlights and squad stats for the season.</p>
-                <a href="#" class="btn">Coming Soon</a>
+                <h3>ESPN NBA</h3>
+                <p>In-depth analysis of the NBA.</p>
+                <a href="https://www.espn.com/nba/" target="_blank" class="btn">NBA Stats</a>
             </div>
         </div>
     </section>
 
     <section id="media">
-        <h2>MEDIA & STREAMS</h2>
+        <h2>MEDIA</h2>
         <div class="grid">
             <div class="card">
                 <h3>VidBox</h3>
-                <p>Your destination for high-quality movies and TV shows.</p>
-                <a href="https://vidbox.cc" target="_blank" class="btn">Watch VidBox</a>
+                <p>Movies and TV shows.</p>
+                <a href="https://vidbox.cc" target="_blank" class="btn">Movies</a>
             </div>
             <div class="card">
                 <h3>StreamEx</h3>
-                <p>The ultimate streaming platform for sports and media.</p>
-                <a href="https://streamex.sh" target="_blank" class="btn">Launch StreamEx</a>
+                <p>The ultimate streaming platform.</p>
+                <a href="https://streamex.sh" target="_blank" class="btn">Streams</a>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 KOPA Crew. Built for the squad.</p>
+    <footer style="text-align:center; padding: 40px; color: #64748b;">
+        <p>&copy; 2026 KOPA Crew.</p>
     </footer>
 
+    <script>
+        // Your Firebase Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyDg6oXU1yBhAM_EPSdCks4VUWSHebOXUk8",
+          authDomain: "kopa-23529.firebaseapp.com",
+          projectId: "kopa-23529",
+          storageBucket: "kopa-23529.firebasestorage.app",
+          messagingSenderId: "265317672840",
+          appId: "1:265317672840:web:c9410184536f42dd85fc3d",
+          measurementId: "G-TG5BY4FPX2"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Login / Logout Logic
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider);
+        }
+        function logout() { auth.signOut(); }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('auth-ui').style.display = 'none';
+                document.getElementById('post-ui').style.display = 'block';
+            } else {
+                document.getElementById('auth-ui').style.display = 'block';
+                document.getElementById('post-ui').style.display = 'none';
+            }
+        });
+
+        // Send Post Logic
+        function sendPost() {
+            const text = document.getElementById('postInput').value;
+            if(!text) return;
+            db.collection('posts').add({
+                name: auth.currentUser.displayName,
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            document.getElementById('postInput').value = '';
+        }
+
+        // Listen for real-time updates
+        db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+            const msgDiv = document.getElementById('messages');
+            msgDiv.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                msgDiv.innerHTML += `<div class="msg">
+                    <small>${data.name || 'Anonymous'}</small>
+                    ${data.text}
+                </div>`;
+            });
+        });
+    </script>
 </body>
 </html>
